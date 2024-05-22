@@ -1,6 +1,6 @@
 section .data
-  num1 dd 2
-  num2 dd 1
+  num1 dd 5.1
+  num2 dd 3.0
 
 segment .bss
   buffer resb 20
@@ -19,10 +19,10 @@ section .text
     mov byte [buffer + 19], 0
 
     .loop:
-      mov eax, ecx;
+      mov eax, ecx
       xor edx, edx
       div esi
-      mov ecx, eax;
+      mov ecx, eax
 
     add edx, '0'
     dec edi
@@ -45,13 +45,19 @@ section .text
 _start:
   movss xmm0, dword [num1]
   ucomiss xmm0, dword [num2]
-  mov ecx, dword [num1]
+
+  fld dword [num1]
+
   jb  _exit
 
-  mov ecx, dword [num2]
+  fld dword [num2]
 
 _exit:
+  fistp dword [num1]
+
+  mov ecx, dword [num1]
   push ecx
+
   call print_int
 
   mov eax, 1
